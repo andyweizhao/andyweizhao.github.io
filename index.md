@@ -1,76 +1,40 @@
-## What I learned from competing against a ConvNet on ImageNet
-Sep 2, 2014
+## A Semi-Supervised Network Embedding Model for Protein Complexes
+Detection
+Sep 23, 2017
 
-The results of the 2014 <span style="color:blue">ImageNet Large Scale Visual Recognition Challenge </span>(ILSVRC) were [published](http://www.baidu.com) a few days ago. The New York Times wrote about it too. ILSVRC is one of the largest challenges in Computer Vision and every year teams compete to claim the state-of-the-art performance on the dataset. The challenge is based on a subset of the ImageNet dataset that was first collected by Deng et al. 2009, and has been organized by our lab here at Stanford since 2010. This year, the challenge saw record participation with 50% more participants than last year, and records were shattered with staggering improvements in both classification and detection tasks.
+Protein complex is a group of associated polypeptide chains which plays essential roles in biological process. Given a graph representing protein-protein interactions (PPI) network, it is
+critical but non-trivial to detect protein complexes, the subsets of proteins that are closely coupled, from it. Network embedding is a method to learn low-dimensional 
+representations of vertices in networks. It has been proved quite useful for community detection
+in social networks in recent years. However, unlike social networks, PPI network does not contain rich metadata, so that existing network embedding methods
+cannot fully capture the network structure to hugely improve the effect of protein complexes detection. In this paper, we propose a semi-supervised
+network embedding model by adopting graph convolutional networks to effectively detect densely connected subgraphs. We
+compare the performance of our model with state-of-the-art approaches on three popular PPI networks with various data sizes and 
+densities. The experimental results show that our approach significantly outperforms other approaches on all three PPI networks.
 
->(My personal) ILSVRC 2014 TLDR: 50% more teams. 50% improved classification and detection. ConvNet ensembles all over the place. Google team wins.
+#### Introduction
+Protein complex is a complex graph structure that is linked by protein-protein interactions (PPI) , which plays an essential role in biological process and drug discovery in pharmaceutical process. Therefore, correctly identifying protein complexes in PPI network is useful in the field of biomedical sciences. However, with the huge increase of PPI data, only a small amount of protein complexes are identified in vitro because of the bottleneck of experimental approaches that require a large amount of labor resource .
 
-#### ILSVRC Classification Task
+Protein complex is a complex graph structure that is linked by protein-protein interactions (PPI) , which plays an essential role in biological process and drug discovery in pharmaceutical process. Therefore, correctly identifying protein complexes in PPI network is useful in the field of biomedical sciences. However, with the huge increase of PPI data, only a small amount of protein complexes are identified in vitro because of the bottleneck of experimental approaches that require a large amount of labor resource .
 
-For the purposes of this post, I would like to focus, in particular, on image classification because this task is the common denominator for many other Computer Vision tasks. The classification task is made up of 1.2 million images in the training set, each labeled with one of 1000 categories that cover a wide variety of objects, animals, scenes, and even some abstract geometric concepts such as “hook”, or “spiral”. The 100,000 test set images are released with the dataset, but the labels are withheld to prevent teams from overfitting on the test set. The teams have to predict 5 (out of 1000) classes and an image is considered to be correct if at least one of the predictions is the ground truth. The test set evaluation is carried out on our end by comparing the predictions to our own set of ground truth labels.
+To overcome the technological limit of experimental approaches for protein complexes detection, computational approaches are used. The PPI network can be represented as an undirected and unweighted graph where proteins are represented as vertices and their interactions as edges. Each protein complex consists of two or more proteins that are shown as densely connected subgraphs, which indicates graph based clustering methods should be utilized to discover them.
+
+For example, used clique finding algorithms to predict protein complexes from PPI network. They devised their own methods to merge overlapping cliques as protein complexes. Besides, introduced Markov Clustering (MCL) as graph partitioning method by simulating random walks, which used two operators called expansion and inflation to boost strong connections and demotes weak connections. Later, showed the robustness of MCL with comparison to three other clustering algorithms for protein complex detection. One of the recent emerging methods is to first identify cores of a protein complex, and then add attachments into these cores to form protein complexes . further evaluated the implementation of this method called COACH against other methods, and proved that COACH outperforms others on two PPI datasets. Though later some methods proposed by other researchers achieved better clustering performance but their methods require additional information to perform with many limitations.
+
+Recently, network embedding has been widely studied and proved that it can further improve the performance of many graph clustering methods , which is also the main focus of this paper. Network embedding learns low-dimensional representations of vertexes in networks to capture and preserve the network structure. However, most of existing network embedding methods heavily relies on the attributes of each vertex in the network, which is not suitable for PPI network. As shown in Figure , there is no any metadata associated with each node except protein name. In other words, existing network embedding methods cannot fully capture PPI network structure because no sufficient information can be used to compute the first-order and the second-order proximity .
+
+To overcome this issue, we propose a semi-supervised network embedding model by adopting graph convolutional networks (GCN) that can capture both local and global structure. Our contributions are two-fold. Firstly, we introduce a method to effectively exploit the first-order proximity even there is no any information associated with each vertex in PPI network. Secondly, we design a GCN based auto-encoder to preserve the second-order proximity. To prove that our model is robust and feasible, we evaluated our model on three PPI datasets with well known benchmark complexes.
+
+![](fig1.png)
+
+
 
 ![](cnntsne.jpg)
 
-### Codes
+Proposed Model
+==============
 
-```
-/*
-** $Id: lstring.c,v 2.55 2015/11/03 15:36:01 roberto Exp roberto $
-** String table (keeps all strings handled by Lua)
-** See Copyright Notice in lua.h
-*/
+PPI data come in the form of connections between proteins, which is easily described as a graph model. Proteins are represented as vertices and their interactions are represented as edges in the graph. Assume we have a graph *G* = (*V*, *E*), where *V* represents a set of vertices in the graph, *V* = *v*<sub>1</sub>, ..., *v*<sub>*n*</sub>. *E* represent a set of edges in the graph, *E* = *e*<sub>1</sub>, ..., *e*<sub>*n*</sub>. Each edge is associated with two vertices. For PPI network, there is no weight for edges.
 
-#define lstring_c
-#define LUA_CORE
+As we mentioned earlier, our goal is to have a network embedding model that can effectively capture the local and global structure of PPI network, so the the clustering performance can be further improved. Therefore, we first define the first-order proximity, which can specifically characterize the local structure of PPI network as shown in Definition 1.
 
-#include "lprefix.h"
-
-
-#include <string.h>
-
-#include "lua.h"
-
-#include "ldebug.h"
-#include "ldo.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
-
-
-#define MEMERRMSG       "not enough memory"
-
-
-/*
-** Lua will use at most ~(2^LUAI_HASHLIMIT) bytes from a string to
-** compute its hash
-*/
-#if !defined(LUAI_HASHLIMIT)
-#define LUAI_HASHLIMIT    	5
-#endif
-
-
-/*
-** equality for long strings
-*/
-int luaS_eqlngstr (TString *a, TString *b) {
-  size_t len = a->u.lnglen;
-  lua_assert(a->tt == LUA_TLNGSTR && b->tt == LUA_TLNGSTR);
-  return (a == b) ||  /* same instance or... */
-    ((len == b->u.lnglen) &&  /* equal length and ... */
-     (memcmp(getstr(a), getstr(b), len) == 0));  /* equal contents */
-}
-```
-
-### Table
-
-<table border=”1″>
-<tr>
-<td>row 1, cell 1</td>
-<td>row 1, cell 2</td>
-</tr>
-<tr>
-<td>row 2, cell 1</td>
-<td>row 2, cell 2</td>
-</tr>
-</table>
+*H*<sup>(*l* + 1)</sup> = *f*(*H*<sup>(*l*)</sup>, *A*),
