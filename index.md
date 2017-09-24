@@ -82,7 +82,7 @@ where *H*<sup>(0)</sup> = *X* and *H*<sup>(*L*)</sup> = *Z*, *L* is the 
 
 &emsp;&emsp;&emsp;&emsp;f(*H*<sup>{(l)}</sup>, A) = ReLU(*A* *H*<sup>(l)</sup>W<sup>(l)</sup>),&emsp;&emsp;&emsp;&emsp;(2)
 
-![]eq_2.png)
+![](eq_2.png)
 
 where *W*<sup>(*l*)</sup> is a weight matrix for the *l*-th network layer and ReLU is the activation function. Note that the multiplication with *A* only sums up all attributes of all neighbor vertices not the vertex itself. Therefore, we need to add an identity matrix *I* to *A*. Then the Equation (2) becomes:
 
