@@ -1,6 +1,6 @@
 # A Semi-Supervised Network Embedding Model for Protein Complexes Detection
 
-## Abstract
+
 Protein complex is a group of associated polypeptide chains which plays essential roles in biological process. Given a graph representing protein-protein interactions (PPI) network, it is
 critical but non-trivial to detect protein complexes, the subsets of proteins that are closely coupled, from it. Network embedding is a method to learn low-dimensional 
 representations of vertices in networks. It has been proved quite useful for community detection
@@ -17,7 +17,7 @@ To overcome the technological limit of experimental approaches for protein compl
 
 For example, used clique finding algorithms to predict protein complexes from PPI network. They devised their own methods to merge overlapping cliques as protein complexes. Besides, introduced Markov Clustering (MCL) as graph partitioning method by simulating random walks, which used two operators called expansion and inflation to boost strong connections and demotes weak connections. Later, showed the robustness of MCL with comparison to three other clustering algorithms for protein complex detection. One of the recent emerging methods is to first identify cores of a protein complex, and then add attachments into these cores to form protein complexes . further evaluated the implementation of this method called COACH against other methods, and proved that COACH outperforms others on two PPI datasets. Though later some methods proposed by other researchers achieved better clustering performance but their methods require additional information to perform with many limitations.
 
-Recently, network embedding has been widely studied and proved that it can further improve the performance of many graph clustering methods , which is also the main focus of this paper. Network embedding learns low-dimensional representations of vertexes in networks to capture and preserve the network structure. However, most of existing network embedding methods heavily relies on the attributes of each vertex in the network, which is not suitable for PPI network. As shown in Figure , there is no any metadata associated with each node except protein name. In other words, existing network embedding methods cannot fully capture PPI network structure because no sufficient information can be used to compute the first-order and the second-order proximity .
+Recently, network embedding has been widely studied and proved that it can further improve the performance of many graph clustering methods , which is also the main focus of this paper. Network embedding learns low-dimensional representations of vertexes in networks to capture and preserve the network structure. However, most of existing network embedding methods heavily relies on the attributes of each vertex in the network, which is not suitable for PPI network. As shown in Figure 1 , there is no any metadata associated with each node except protein name. In other words, existing network embedding methods cannot fully capture PPI network structure because no sufficient information can be used to compute the first-order and the second-order proximity .
 
 To overcome this issue, we propose a semi-supervised network embedding model by adopting graph convolutional networks (GCN) that can capture both local and global structure. Our contributions are two-fold. Firstly, we introduce a method to effectively exploit the first-order proximity even there is no any information associated with each vertex in PPI network. Secondly, we design a GCN based auto-encoder to preserve the second-order proximity. To prove that our model is robust and feasible, we evaluated our model on three PPI datasets with well known benchmark complexes.
 
@@ -76,15 +76,17 @@ In our proposed model, we can naturally incorporate vertices' attributes to simu
 
 In this definition, *D* is the number of attributes per vertex. As the attributes are generated based on the selected neighbor vertices. In other words, the number of attributes for each vertex is different. Therefore, we set *N* to be the value of *D* initially. When constructing *X*, we set relevant elements to 0 if the vertex does not has these attributes. Every network layer can then be written as a non-linear function:
 
-&emsp;&emsp;&emsp;&emsp;H^<span>(l+1)</span> = f(H^<span>(l)</span>, A),&emsp;&emsp;&emsp;&emsp;(1)
+&emsp;&emsp;&emsp;&emsp;*H*<sup>(l+1)</sup> = f(*H*<sup>(l)</sup>, A),&emsp;&emsp;&emsp;&emsp;(1)
 
 where *H*<sup>(0)</sup> = *X* and *H*<sup>(*L*)</sup> = *Z*, *L* is the number of layers. We then set the following propagation rule:
 
-&emsp;&emsp;&emsp;&emsp;f(H^{(l)}, A) = ReLU(AH^{(l)}W^{(l)}),&emsp;&emsp;&emsp;&emsp;(2)
+&emsp;&emsp;&emsp;&emsp;f(*H*<sup>{(l)}</sup>, A) = ReLU(*A* *H*<sup>(l)</sup>W<sup>(l)</sup>),&emsp;&emsp;&emsp;&emsp;(2)
+
+![]eq_2.png)
 
 where *W*<sup>(*l*)</sup> is a weight matrix for the *l*-th network layer and ReLU is the activation function. Note that the multiplication with *A* only sums up all attributes of all neighbor vertices not the vertex itself. Therefore, we need to add an identity matrix *I* to *A*. Then the Equation (2) becomes:
 
-&emsp;&emsp;&emsp;&emsp;f(H^{(l)}, A) = ReLU(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^{(l)}W^{(l)}),&emsp;&emsp;&emsp;&emsp;(3)
+&emsp;&emsp;&emsp;&emsp;f(*H*<sup>(l)</sup>, A) = ReLU(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^{(l)}W^{(l)}),&emsp;&emsp;&emsp;&emsp;(3)
 
 where $\\hat{A} = A + I$ and $\\hat{D}$ is the diagonal vertex degree matrix of $\\hat{A}$. We set the *L* = 3, which means the network has three convolutional layers to reconstruct the structure of *A* to get *Z*. Assume we decide to keep half number of attributes from previous layer in every layer in this work, we have $F = \\frac{D}{2^L}= \\frac{D}{8}$ after three layers.
 
@@ -245,3 +247,5 @@ Detecting protein complexes in PPI network is an important task in the field of 
 Compared with other network embedding methods, we design an algorithm to select critical neighbour vertices as attributes for each vertex so that the first-order proximity can be exploited. In addition, we design a three layers GCN deeply learn the structure of PPI networks to preserve the second-order proximity.
 
 Extensive experiments performed on various PPI networks show that our model is robust and outperforms other state-of-the-art approaches on various indicators. In the future, we plan to integrate information from biomedical literature using recurrent neural network into PPI networks, which shall further improve the performance of protein complexes detection.
+
+
