@@ -109,5 +109,139 @@ where *v*<sub>*i*</sub> and *v*<sub>*j*</sub> are two vertices linked by an edge
 
 For the *L*<sub>*s**e**c**o**n**d*</sub>, we define it as:
 
+&emsp;&emsp;&emsp;&emsp;L\_<span>second</span> = ,&emsp;&emsp;&emsp;&emsp;(6)
 
+where $H^{(0)} = N \\times D, H^{(l)} = N \\times \\frac{D}{2^l}$. Again, we also Use zero element to fill up the smaller matrix to make sure subtraction between matrices can be performed.
 
+According to the Equation (5) and Equation (6), we can easily know that we need to minimize *D*, which in fact is constructed based on selected neighbor vertices in order to jointly minimize *L*<sub>*f**i**r**s**t*</sub> and *L*<sub>*s**e**c**o**n**d*</sub> so that *L* can be minimized.
+
+If we refer to the Definition 3, the optimization problem becomes a matrix dimensionality reduction problem. In this work, we use the tradition singular value decomposition (SVD) method to perform this task. According to the theorem of SVD, a matrix *X* with size *N* × *D* can be rewritten as *U* × *S* × *V*<sup>\*</sup>, where *U* is the orthogonal matrix of *X* with size *N* × *N*, *S* is the diagonal matrix of *X* with size *N* × *D*, and *V*<sup>\*</sup> is the conjugate transpose of the orthogonal matrix with size *D* × *D*. *S* is also called the singular values of *X*. If we set the smallest of the top certain percentage *P* of the singular values to zero, then we can get the approximated matrix of *X*, namely *X*<sup>′</sup>. Eventually, the value of *D* is reduced. However, because we want to minimize the reconstruction error of *X* → *X*<sup>′</sup>, we have to maximize the value of 1 − *P*. Because *X*<sup>′</sup> = (1 − *P*)*X* after we perform the multiplication using SVD, and *X* is a *N* × *D* matrix, therefore, we can convert the problem to a goal programming problem[1] as shown in Equation (7), Equation (8), and Equation (9):
+
+&emsp;&emsp;&emsp;&emsp;min Z = h\_1^- + h\_1^+ + h\_2^- + h\_2^+,&emsp;&emsp;&emsp;&emsp;(7)
+
+&emsp;&emsp;&emsp;&emsp;(1-P)X + h\_1^- - h\_1^+ = ,&emsp;&emsp;&emsp;&emsp;(8)
+
+&emsp;&emsp;&emsp;&emsp;D + h\_2^- - h\_2^+ = ,&emsp;&emsp;&emsp;&emsp;(9)
+
+where *α* is the matrix with the maximum number of *D*, and *β* is the minimum number of *D*, *h*<sub>1</sub><sup>−</sup>, *h*<sub>1</sub><sup>+</sup> are positive and negative deviation variables for the first objective, and *h*<sub>2</sub><sup>−</sup>, *h*<sub>2</sub><sup>+</sup> are the positive and negative deviation variables for the second objective. In this work, we treat both positive and negative deviation variables are equally important that means the weight is 1 for each of them. Obviously, when *Z* is equal to zero, we can get a Pareto optimal solution[1]. Therefore, we keep updating the *α* and *β* until we found the combination that can make *Z* closes or equals to zero.
+
+![](table1.png)
+
+&emsp;&emsp;&emsp;&emsp;Table 1: Features of PPI datasets
+
+For hyperparameter optimization, we set dropout rate to 0.2 for all layers, L2
+regularization factor for each convolutional layer and number of hidden units.
+We train the model for a maximum of 200 epochs using Adam optimizer \cite{2014King} with
+a learning rate of 0.01 and early stopping with a window size of 10.
+
+## Evaluation
+
+In this section, we show our experiments on three PPI data sets to demonstrate the performance of our model by comparing it with state-of-the-art methods. The experiments were performed on a desktop with i7 CPU dual core 4.00GHZ, 16GB memory, and a GTX 1070 card. The calculation of the whole process can be completed in less than one day on all three data sets, which is acceptable. In addition, since PPI data clustering usually is one-off process in the real world, we do not focus on running time improvement and time complexity analysis in this research because clustering quality is much important.
+
+### Data Corpus and Evaluation Metrics
+
+We used the latest three popular PPI data sets for *Saccharomyces cerevisiae*, namely, Krogan , Dip and Biogrid . The Krogan and dip data sets were used by Li et al. to evaluate the performance of several clustering algorithms. As shown in Table 1, Krogan and Dip data sets have similar number of average degree and density, but Biogrid has much higher average degree and density than them. Because PPI data can be represented as a undirected graph *G* = (*V*, *E*), thus, the average degree is calculated as $\\frac{2 \\times |E|}{|V|}$, and the density is calculated as $\\frac{2 \\times |E|}{|V|\\times (|V| - 1)}$.
+
+PPI data have a high rate of false positives, which has been estimated to be about 50% . The noise of the data disturbs clustering methods to detect protein complexes from PPI data. Thus, we used CYC2008 complexes as a reference data set, which was published by Pu et al. . CYC2008 provides a comprehensive catalogue of manually curated 408 protein complexes in Saccharoyces cerevisiae, and has 90% more complexes than the other popular data set MIPS .
+
+We used neighbourhood affinity score to see whether a complex detected by an algorithm is matched with protein complexes in the CYC2008, which is the same as many others, e.g., Li et al. . We then used it to calculate the precision, recall, and F-measure to evaluate the performance of an algorithm. The neighbourhood affinity score *N**A*(*p*, *b*) is defined as follows:
+
+NA(p,b) = ,
+
+where *P* = (*V*<sub>*p*</sub>, *E*<sub>*p*</sub>) is a predicted complex and *B* = (*V*<sub>*b*</sub>, *E*<sub>*b*</sub>) is a benchmark complex. We then have the precision calculated as follows:
+
+&emsp;&emsp;&emsp;&emsp;Precision = ,
+
+where $ N\_{cp}=\\mid \\{p\\mid p \\in P, NA(p,b) \\geq \\omega,
+            \\,\\mbox{\\fontsize{8}{10}\\selectfont for}\\,\\exists b \\in B\\}\\mid$.
+The recall is calculated as follows:
+
+&emsp;&emsp;&emsp;&emsp;Recall = ,
+
+where *N*<sub>*c**b*</sub> = ∣{*b* ∣ *b* ∈ *B*, *N**A*(*p*, *b*)≥*ω*,  *f**o**r*∃*p* ∈ *P*}∣.
+
+The F-measure is the precision, recall, and F-measure harmonic mean of Precision and recall as follows:
+
+F-measure = .
+
+The *ω* is a threshold, which indicates if a protein complex is identified for any protein complex in the benchmark data set. According to our experiments and the recommendation by , we set the neighbourhood affinity score threshold as 0.25, which made the difference of performance among various algorithms.
+
+In addition, we also used three indicators to measure the quality of clustered protein complexes, Fraction (Frac), Maximum Matching Ratio (MMR) and Geometry Accuracy (Acc) . Frac is an indicator that measures the fraction of pairs between two protein complexes with an overlap score *θ* larger than 0.25, where Frac(*θ*) is calculated as below:
+
+&emsp;&emsp;&emsp;&emsp;theta(A, B)= ,&emsp;&emsp;&emsp;&emsp;(10)
+
+where *A* and *B* are two protein complexes.
+
+Acc is the geometric mean of two other measures: the clustering-wise
+sensitivity (Sn) and the clustering-wise positive predictive value (PPV). The
+Sn and PPV are:
+
+&emsp;&emsp;&emsp;&emsp;Sn = ,
+
+&emsp;&emsp;&emsp;&emsp;PPV =
+
+where *n* are the number of proteins of reference protein complexes and *m* are the number of proteins of clustered protein complexes. The element *t*<sub>*i**j*</sub> refers to the number of proteins that are found in both complexes. Because Sn can be inflated by putting every protein in the same complex while the PPV can be maximized by putting every protein in its own complex, we then have these two measures to compute the geometric mean of Sn and PPV:
+
+&emsp;&emsp;&emsp;&emsp;Acc = .
+
+MMR represents the two sets of clustered protein complexes as a bipartite graph where the two sets of nodes represent the reference and predicted complexes, respectively, and an edge connecting a reference complex with a predicted one is weighted by the overlap score. The overlap score between two protein complexes is computed by Equation (10). The value of the MMR is given by the total weight of particular subset of edges that have maximum weight, divided by the number of reference protein complexes. This measure expresses how well the clustered protein complexes represent the reference ones.
+
+### Evaluation Results
+
+As COACH is the most stable and representative clustering method for PPI network so far according to our study, we use it as the clustering method to evaluate our model. We compared the performance of our model with two state-of-the-art network embedding models, DeepWalk and SDNE . To evaluate the robustness of our model, we also choose two different types of traditional clustering methods, K-means and DBSCAN to compare. For COACH, we set the three key parameters of this method, namely, DENSITY, AFFINITY, and CLOSENESS, to 0.7, 0.2 and 0.5, respectively, according to our experimental analysis that can achieve stable performance with all network embedding methods. For the parameters of K-means and DBSCAN, we just use the default settings.
+
+Because SDNE also requires the first-order proximity but due to it is designed for social networks originally, we implemented three versions of SDNE, no attributes for each vertex, namely SDNE-NA, use all neighbor vertices as attributes for each vertex, namely SDNE-ALL, use selected neighbor vertices as attributes for each vertex, namely SDNE-SN. The neighbor vertices selection method is the same as we described in Algorithm 1.
+
+### Comparison Test
+
+The results of precision, recall and F-measure on different data sets are presented in Figure 4, Figure 5 and Figure 6, respectively.
+
+From the results, we learn that our approach outperforms others on all three data sets in terms of precision, recall and F-measure. Particularly on the Biogrid data set that has high density, our model achieves at least 90% higher F-measure value than the model in the second place. On the Dip data set, our model achieves the highest 0.528 F-Measure, which is around 20% higher than using COACH only. Our model is also 9.5% higher than the COACH+SDNE-SN method that is the second best method, and 17% higher than the COACH+DeepWalk method. Similar outcomes are also found on Krogan data set. These results prove that our network embedding model is more appropriate than other models on the network with high density.
+
+In addition, we find that SDNE-SN is better than SDNE-NA and SDNE-ALL on all three corpora. Because SDNE-SN is implemented based on our proposed Algorithm 1 to calculated the first-order proximity, the results prove the effectiveness of our model from the side.
+
+For K-means and DBSCAN clustering methods, both are quite disappointed on this task. No matter what kind of network embedding methods to use together, the experimental results are not very good, which means these two methods are not suitable for PPI network.
+
+![](fig4.png)
+
+&emsp;&emsp;&emsp;&emsp;Figure 4: Comparison results on Krogan data set
+
+![](fig5.png)
+
+&emsp;&emsp;&emsp;&emsp;Figure 5: Comparison results on Dip data set
+
+![](fig6.png)
+
+&emsp;&emsp;&emsp;&emsp;Figure 6: Comparison results on Biogrid data set
+
+### Quality Measurement
+
+In this section, we compare the clustering quality of each method. According to the results of previous section, we only select three representative methods to compare, COACH, COACH+DeepWalk and COACH＋SDNE-SN. Table shows the number of protein complexes detected by different methods. From this table, we can find that our model can detect more protein complexes that others on all three corpora. Having the basis of this quantity, it is easier to improve the quality of clustering.
+
+![](table2.png)
+
+&emsp;&emsp;&emsp;&emsp;Table 2: Number of Protein Complexes Detected by Different Methods
+
+Table 3, 4 and 5 show the clustering quality comparisons on Krogan, Dip and Biogrid data set respectively. From the Table  , we can see that our model can achieve better clustering quality, which is around 38% higher than the COACH+SDNE-SN that is the second best in terms of MMR and Frac, and around 25% higher for Acc. Similar situation also happened on the Dip data set.
+
+For the Biogrid data set, the clustering quality of all models is dropped dramatically due to the high density of this network. However, our model still outperforms others. For example, our model achieves 0.69 “Acc” value, which is approximately 25% higher than the COACH+SDNE-SN, which is in the second place.
+
+![](table3.png)
+
+&emsp;&emsp;&emsp;&emsp;Table 3: Quality of the Clustered Protein Complexes from Krogan Data Set}
+
+![](table4.png)
+
+&emsp;&emsp;&emsp;&emsp;Table 4: Quality of the Clustered Protein Complexes from Dip Data Set
+
+![](table5.png)
+
+&emsp;&emsp;&emsp;&emsp;Table 5: Quality of the Clustered Protein Complexes from Biogrid Data Set
+
+## Conclusions and Future Work
+
+Detecting protein complexes in PPI network is an important task in the field of biomedical sciences. Thus, with advances in technology, the size of PPI network is growing much faster than ever but does not contain rich metadata like social networks, which makes the task non-trivial. In this study, we propose a semi-supervised network embedding model that can fully capture the network structure that can help to improve the performance of protein complexes detection.
+
+Compared with other network embedding methods, we design an algorithm to select critical neighbour vertices as attributes for each vertex so that the first-order proximity can be exploited. In addition, we design a three layers GCN deeply learn the structure of PPI networks to preserve the second-order proximity.
+
+Extensive experiments performed on various PPI networks show that our model is robust and outperforms other state-of-the-art approaches on various indicators. In the future, we plan to integrate information from biomedical literature using recurrent neural network into PPI networks, which shall further improve the performance of protein complexes detection.
