@@ -177,7 +177,7 @@ Sn and PPV are:
 
 where *n* are the number of proteins of reference protein complexes and *m* are the number of proteins of clustered protein complexes. The element *t*<sub>*i**j*</sub> refers to the number of proteins that are found in both complexes. Because Sn can be inflated by putting every protein in the same complex while the PPV can be maximized by putting every protein in its own complex, we then have these two measures to compute the geometric mean of Sn and PPV:
 
-&emsp;&emsp;&emsp;&emsp;Acc = .
+![](eq_a5.png)
 
 MMR represents the two sets of clustered protein complexes as a bipartite graph where the two sets of nodes represent the reference and predicted complexes, respectively, and an edge connecting a reference complex with a predicted one is weighted by the overlap score. The overlap score between two protein complexes is computed by Equation (10). The value of the MMR is given by the total weight of particular subset of edges that have maximum weight, divided by the number of reference protein complexes. This measure expresses how well the clustered protein complexes represent the reference ones.
 
@@ -240,5 +240,22 @@ Detecting protein complexes in PPI network is an important task in the field of 
 Compared with other network embedding methods, we design an algorithm to select critical neighbour vertices as attributes for each vertex so that the first-order proximity can be exploited. In addition, we design a three layers GCN deeply learn the structure of PPI networks to preserve the second-order proximity.
 
 Extensive experiments performed on various PPI networks show that our model is robust and outperforms other state-of-the-art approaches on various indicators. In the future, we plan to integrate information from biomedical literature using recurrent neural network into PPI networks, which shall further improve the performance of protein complexes detection.
+
+## References
+Ester, M.; Kriegel, H. P.; Sander, J.; and Xu, X. W. 1996. A density-based algorithm for discovering clusters in large spatial databases with noise. In SIGKDD, 226–231.
+
+Kipf, T. N., and Welling, M. 2016. Variational Graph Auto- Encoders. ArXiv e-prints:1611.07308.
+
+Krogan, N.; Cagney, G.; Yu, H.; Zhong, G.; Guo, X.; and et al. 2006. Global landscape of protein complexes in the yeast saccharomyces cerevisiae. Nature 440(7082):637– 643.
+
+MacQueen, J. B. 1967. Some methods for classification and analysis of multivariate observations. In Proceedings of 5th Berkeley Symposium on Mathematical Statistics and Probability, 281–297.
+
+Min, W.; Li, X. L.; Kwoh, C. K.; and Ng, S. K. 2009. A core-attachment based method to detect protein complexes in ppi networks. BMC Bioinformatics 10(1):169.
+
+Perozzi, B.; Al-Rfou, R.; and Skiena, S. 2014. Deepwalk: Online learning of social representations. In SIGKDD, 701– 710.
+
+Wang, D.; Cui, P.; and Zhu, W. 2016. Structural deep net- work embedding. In SIGKDD, 1225–1234.
+
+Xenarios, I.; Salwinski, L.; Duan, X.; Higney, P.; Kim, S.; and Eisenberg, D. 2002. Dip, the database of interacting proteins: a research tool for studying cellular networks of ptoein interactions. Nucleic Acids Research 30:303–305.
 
 
