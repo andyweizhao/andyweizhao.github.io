@@ -143,29 +143,29 @@ PPI data have a high rate of false positives, which has been estimated to be abo
 
 We used neighbourhood affinity score to see whether a complex detected by an algorithm is matched with protein complexes in the CYC2008, which is the same as many others, e.g., Li et al. . We then used it to calculate the precision, recall, and F-measure to evaluate the performance of an algorithm. The neighbourhood affinity score *N**A*(*p*, *b*) is defined as follows:
 
-NA(p,b) = ,
+![](eq_a1.png)
 
 where *P* = (*V*<sub>*p*</sub>, *E*<sub>*p*</sub>) is a predicted complex and *B* = (*V*<sub>*b*</sub>, *E*<sub>*b*</sub>) is a benchmark complex. We then have the precision calculated as follows:
 
-&emsp;&emsp;&emsp;&emsp;Precision = ,
+![](eq_a21.png)
 
 where $ N\_{cp}=\\mid \\{p\\mid p \\in P, NA(p,b) \\geq \\omega,
             \\,\\mbox{\\fontsize{8}{10}\\selectfont for}\\,\\exists b \\in B\\}\\mid$.
 The recall is calculated as follows:
 
-&emsp;&emsp;&emsp;&emsp;Recall = ,
+![](eq_a22.png)
 
 where *N*<sub>*c**b*</sub> = ∣{*b* ∣ *b* ∈ *B*, *N**A*(*p*, *b*)≥*ω*,  *f**o**r*∃*p* ∈ *P*}∣.
 
 The F-measure is the precision, recall, and F-measure harmonic mean of Precision and recall as follows:
 
-F-measure = .
+![](eq_a3.png)
 
 The *ω* is a threshold, which indicates if a protein complex is identified for any protein complex in the benchmark data set. According to our experiments and the recommendation by , we set the neighbourhood affinity score threshold as 0.25, which made the difference of performance among various algorithms.
 
 In addition, we also used three indicators to measure the quality of clustered protein complexes, Fraction (Frac), Maximum Matching Ratio (MMR) and Geometry Accuracy (Acc) . Frac is an indicator that measures the fraction of pairs between two protein complexes with an overlap score *θ* larger than 0.25, where Frac(*θ*) is calculated as below:
 
-&emsp;&emsp;&emsp;&emsp;theta(A, B)= ,&emsp;&emsp;&emsp;&emsp;(10)
+![](eq_10.png)
 
 where *A* and *B* are two protein complexes.
 
@@ -173,9 +173,7 @@ Acc is the geometric mean of two other measures: the clustering-wise
 sensitivity (Sn) and the clustering-wise positive predictive value (PPV). The
 Sn and PPV are:
 
-&emsp;&emsp;&emsp;&emsp;Sn = ,
-
-&emsp;&emsp;&emsp;&emsp;PPV =
+![](eq_a4.png)
 
 where *n* are the number of proteins of reference protein complexes and *m* are the number of proteins of clustered protein complexes. The element *t*<sub>*i**j*</sub> refers to the number of proteins that are found in both complexes. Because Sn can be inflated by putting every protein in the same complex while the PPV can be maximized by putting every protein in its own complex, we then have these two measures to compute the geometric mean of Sn and PPV:
 
