@@ -76,19 +76,18 @@ In our proposed model, we can naturally incorporate vertices' attributes to simu
 
 In this definition, *D* is the number of attributes per vertex. As the attributes are generated based on the selected neighbor vertices. In other words, the number of attributes for each vertex is different. Therefore, we set *N* to be the value of *D* initially. When constructing *X*, we set relevant elements to 0 if the vertex does not has these attributes. Every network layer can then be written as a non-linear function:
 
-&emsp;&emsp;&emsp;&emsp;*H*<sup>(l+1)</sup> = f(*H*<sup>(l)</sup>, A),&emsp;&emsp;&emsp;&emsp;(1)
+![](eq_1.png)
 
 where *H*<sup>(0)</sup> = *X* and *H*<sup>(*L*)</sup> = *Z*, *L* is the number of layers. We then set the following propagation rule:
-
-&emsp;&emsp;&emsp;&emsp;f(*H*<sup>{(l)}</sup>, A) = ReLU(*A* *H*<sup>(l)</sup>W<sup>(l)</sup>),&emsp;&emsp;&emsp;&emsp;(2)
 
 ![](eq_2.png)
 
 where *W*<sup>(*l*)</sup> is a weight matrix for the *l*-th network layer and ReLU is the activation function. Note that the multiplication with *A* only sums up all attributes of all neighbor vertices not the vertex itself. Therefore, we need to add an identity matrix *I* to *A*. Then the Equation (2) becomes:
 
-&emsp;&emsp;&emsp;&emsp;f(*H*<sup>(l)</sup>, A) = ReLU(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^{(l)}W^{(l)}),&emsp;&emsp;&emsp;&emsp;(3)
+![](eq_3.png)
 
-where $\\hat{A} = A + I$ and $\\hat{D}$ is the diagonal vertex degree matrix of $\\hat{A}$. We set the *L* = 3, which means the network has three convolutional layers to reconstruct the structure of *A* to get *Z*. Assume we decide to keep half number of attributes from previous layer in every layer in this work, we have $F = \\frac{D}{2^L}= \\frac{D}{8}$ after three layers.
+$\\hat{A} = A + I$
+where $\\hat{A} = A + I and $\\hat{D}$ is the diagonal vertex degree matrix of $\\hat{A}$. We set the *L* = 3, which means the network has three convolutional layers to reconstruct the structure of *A* to get *Z*. Assume we decide to keep half number of attributes from previous layer in every layer in this work, we have $F = \\frac{D}{2^L}= \\frac{D}{8}$ after three layers.
 
 ### Model Optimization
 
