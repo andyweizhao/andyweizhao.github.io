@@ -259,3 +259,14 @@ Wang, D.; Cui, P.; and Zhu, W. 2016. Structural deep net- work embedding. In SIG
 Xenarios, I.; Salwinski, L.; Duan, X.; Higney, P.; Kim, S.; and Eisenberg, D. 2002. Dip, the database of interacting proteins: a research tool for studying cellular networks of ptoein interactions. Nucleic Acids Research 30:303–305.
 
 
+This expression $\sqrt{3x-1}+(1+x)^2$ is an example of a $\LaTeX$ inline equation.
+
+he Lorenz Equations:
+
+$$
+\begin{aligned}
+\dot{x} & = \sigma(y-x) \\
+\dot{y} & = \rho x - y - xz \\
+\dot{z} & = -\beta z + xy
+\end{aligned}
+$$
