@@ -1,0 +1,63 @@
+Dear Wei Zhao,
+
+On behalf of the EurNLP 2019 Program Committee, we are delighted to inform you that the following submission has been accepted to appear at the conference:
+
+77: X-lingual Metric: Machine Translation Evaluation without Human References
+
+The selection process was very competitive. Out of 179 valid submissions, we accepted 57 submissions, which yields an acceptance rate of 31.8%. The Program Committee worked very hard to thoroughly review all submissions.
+
+In addition, we are delighted to award you a travel grant to attend EurNLP. We will be in touch as soon as possible with further details regarding the booking of flights and accommodation. By default, the travel grant is awarded to the first author of the submission who must be a student and is automatically registered to the conference.
+
+Please let us know if you no longer require the grant or are unable to attend the conference. Please let us know if a co-author would additionally like to attend as we currently have a long waiting list. In addition, please let us know if you require an invitation letter to obtain a visa for the conference.
+
+No camera-ready paper will be due. Instead, each accepted abstract will be presented as a poster during EurNLP on October 11 in London.
+
+You can log into easychair to access your submission: https://easychair.org/conferences/?conf=eurnlp2019
+
+The reviews are also attached below.
+
+Congratulations on your fine work. If you have any additional questions, please feel free to get in touch.
+
+Best Regards,
+Barbara Plank and Sebastian Ruder, Program Co-Chairs, EurNLP 2019
+
+SUBMISSION: 77
+TITLE: X-lingual Metric: Machine Translation Evaluation without Human References
+
+
+----------------------- REVIEW 1 ---------------------
+SUBMISSION: 77
+TITLE: X-lingual Metric: Machine Translation Evaluation without Human References
+AUTHORS: Wei Zhao, Yang Gao and Steffen Eger
+
+----------- Contributions, main strengths and weaknesses -----------
+The paper proposes a novel metric called MoverScore, which combines contextualized word embeddings with Word Mover Distance to improve the correlation between the metric scores with the actual human assessments.
+
+Strengths:
+1. Interesting idea that is based on a well-defined content of Earth Mover Distance
+2. The novel metric is extended to try to not use any parallel data by exploiting cross-language embeddings
+3. The paper provides an analysis of possible reasons of some of the non-positive results they got.
+
+Weaknesses:
+1. The varian using cross-language embeddings are not performing at the same level as the one using parallel data
+----------- Overall recommendation -----------
+SCORE: 4 (Strong: I would like to see it accepted.)
+----------- Justification -----------
+The paper shows a nice piece of research that totally fits the topics of EurNLP. The results look promising and the technology developed and researched will generate lots of discussions at the conference.
+
+
+
+----------------------- REVIEW 2 ---------------------
+SUBMISSION: 77
+TITLE: X-lingual Metric: Machine Translation Evaluation without Human References
+AUTHORS: Wei Zhao, Yang Gao and Steffen Eger
+
+----------- Contributions, main strengths and weaknesses -----------
+This abstract describes an ongoing follow-up work to the work on MoverScore, a contextualized-word-embedding based evaluation method for machine translation.
+In this work, the authors try to extend the approach to use cross-lingual word and sentence representations, towards reference-free machine translation evaluation.
+The initial results are inconclusive, where cross-lingual word embeddings work better than cross-lingual sentence representations, but not better than BLEU.
+I find this research direction interesting and novel, and as it clearly challenges the common status-quo on MT evaluation I think it suits the EurNLP program.
+----------- Overall recommendation -----------
+SCORE: 4 (Strong: I would like to see it accepted.)
+----------- Justification -----------
+The approach is creative and novel: even though the results are inconclusive or negative, I think this is an interesting work in progress.

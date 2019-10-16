@@ -1,0 +1,202 @@
+Dear Wei Zhao:
+
+On behalf of the ACL 2019 Program Committee, we are delighted to inform you that the following submission has been accepted to appear at the conference:
+
+Bridging Capsule Networks and Mature NLP Applications
+
+The Program Committee worked very hard to thoroughly review all the submitted papers. Please repay their efforts, by following their suggestions when you revise your paper.
+
+Camera ready papers are due Monday, June 3, 11:59pm UTC-12, and the final manuscript must be uploaded to the following site:
+
+https://www.softconf.com/acl2019/papers/
+
+You will be prompted to login to your START account. If you do not see your submission, you can access it with the following passcode:
+
+2376X-G8J3A4J3B2
+
+Alternatively, you can click on the following URL, which will take you directly to a form to submit your final paper (after logging into your account):
+
+https://www.softconf.com/acl2019/papers/user/scmd.cgi?scmd=aLogin&passcode=2376X-G8J3A4J3B2
+
+Please make sure that at least one author registers for the conference and travels to Florence to present the paper. Registration will open soon, and more information can be found here:
+http://www.acl2019.org/EN/registrations.xhtml
+
+If you have also submitted your paper to another conference or archival workshop, you will need to withdraw your paper from the other venues to be presented at the conference and published in the proceedings.
+
+The reviews and meta-reviews are attached below.  Note that our selection process was not based solely on the reviewers assessment and scores, but also on discussions among reviewers, careful assessment by  Area Chairs and Senior Area Chairs, and our goal to assemble a varied, interesting and high quality program. Try to follow the advice included in the reviews when you revise your paper.
+
+We will notify all authors within the next month as to whether their paper will be presented as a talk or a poster. This decision will not based on the quality of the paper, but on the best way to present the work, the coherence with other papers in sessions, and availability of each type of presentation slot.
+
+Congratulations on your fine work. If you have any additional questions, please feel free to get in touch.
+
+Best Regards,
+Anna Korhonen and David Traum
+Program Chairs, ACL 2019 ACL 2019
+
+============================================================================ 
+ACL 2019 Reviews for Submission #2376
+============================================================================ 
+
+Title: Bridging Capsule Networks and Mature NLP Applications
+Authors: Wei Zhao, Haiyun Peng, Steffen Eger, Erik Cambria and Min Yang
+
+============================================================================
+                            META-REVIEW
+============================================================================ 
+
+Comments: The paper proposes several adjustment to capsule nets such that they can be applied to key NLP tasks demonstrating empirical improvements.
+============================================================================
+                            REVIEWER #1
+============================================================================
+
+What is this paper about, what contributions does it make, what are the main strengths and weaknesses?
+---------------------------------------------------------------------------
+This work builds upon the work on capsule networks for NLP tasks and attempts to address three main issues - instability of existing routing algorithms, training complexity, and scalability to large label sets. The authors propose an adaptive routing algorithm with kernel density estimation, capsule compression for faster training, and superior generalization with fewer training examples. 
+
+Strengths:
+The experimental results are promising and show a good improvement over competing models. Especially for the large multi-label classification task, comparisons are thorough and the generalization gains are evident.
+
+Weaknesses:
+1. The issues with the current capsule networks for NLP are not explained at all which makes it difficult to appreciate the motivation behind this work. Why are the existing routing algorithms unstable? Why is the training complexity high? What prevents them from scaling to large label sets? These are some of the questions that are not well answered. There's an attempt to answer these in section 2 but that's coming too late and it fails to justify, for instance, why the lack of an iterative objective function or fixed number of iterations makes the existing routing algorithms unstable?
+2. The paper jumps into the proposed NLP-capsule framework without any background on the current frameworks or what is it that is exactly different from them in the proposed framework. Would strongly recommend that you include a background section that describes the capsule network and then describe the proposed network building upon that.
+3. There are several things in section 2 that are unclear and need to be better explained. For instance, it is not clear how the group-convolution operation in the primary capsule layer preserves the linguistic properties of the feature map? There's a reference to partial routing without sufficient details. 
+4. Experiments - (a) the choice of NLP tasks is not motivated. Is this framework suitable for only the two specific tasks of multi-label text classification and question-answering? If not, then why is this a good choice of tasks for evaluation? (b) question-answering is evaluated only on the TREC QA dataset. Should be evaluated on more recent and larger datasets like SQuAD as well.
+---------------------------------------------------------------------------
+
+
+Reasons to reject
+---------------------------------------------------------------------------
+The paper needs more clarity on various points as discussed above and cannot be accepted in its current form.
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+Reviewer's Scores
+---------------------------------------------------------------------------
+                  Overall Recommendation: 2.5
+
+Questions and Suggestions for the Author(s)
+---------------------------------------------------------------------------
+Would strongly encourage the authors to work on providing motivations and intuitions throughout the paper. I have provided several instances above. Active learning-based approaches also attempt to address the need for large amounts of labeled data. Some discussion around how does this compare with active learning-based paradigm would be good.
+---------------------------------------------------------------------------
+
+
+
+============================================================================
+                            REVIEWER #2
+============================================================================
+
+What is this paper about, what contributions does it make, what are the main strengths and weaknesses?
+---------------------------------------------------------------------------
+This paper introduces a capsule network approach to NLP problems with two notable contributions: an improvement to the routing algorithm and a "capsule compression" layer that improves the scalability of the capsule network approach. These are demonstrated on two different problems: of large multi-label classification and a question answering dataset where the authors show that their proposed approach is more accurate than previously published ones.
+
+In general, I thought the paper had good ideas and contributions that the rest of the ACL community would be interested in especially the improvement to routing. The paper could do a much better job of explaining this and the compression contribution, as it could with a rationale of its choice of datasets.
+
+Strengths: 
+The paper demonstrates an improvement to the capsule network approach - an area of active research. 
+The improvement to the routing algorithm appears to be noteworthy as it could extend to other capsule networks as well.
+The results indicate that the model is relatively more accurate as the #data decreases which could make it useful in a lot of data scarce scenarios
+
+Weaknesses:
+
+The rationale behind the specific datasets that the authors chose is not clear. And its unclear how this affects the final comparisons. 
+For example the extreme label classification collection has a lot of datasets. Why did the authors choose these two over others? Size?
+---------------------------------------------------------------------------
+
+
+Reasons to accept
+---------------------------------------------------------------------------
+Improvements to an approach that is an area of active research
+Core improvements to routing and scalability could apply to other capsule networks
+---------------------------------------------------------------------------
+
+
+Reasons to reject
+---------------------------------------------------------------------------
+The rationale behind the choice of datasets is unclear making it hard to understand how generalizable these improvements are.
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+Reviewer's Scores
+---------------------------------------------------------------------------
+                  Overall Recommendation: 4
+
+Questions and Suggestions for the Author(s)
+---------------------------------------------------------------------------
+Figure 4, esp the blocks with the arrows are hard to read. I suggest adding sizes of these layers to the figure, like the Zhao et al paper cited.
+
+I found the sections on the core contributions of the paper (KDE routing and compression) cryptic and hard to read. One or two sentences explaining the intuition behind KDE routing in addition to Eq6 would make it easier for a reader to understand. The section on accelerated training is worse, especially the last sentence "We hereby introduce partial routing that only aggregates high level capsules into several representations in one batch..." I did several passes and I don't think I've understood the implication of this.
+
+Fig 6 can be a table. At the least, please don't commit the cardinal sin of arbitrarily deciding where the y-offset starts (0.4 and 0.5 in this case). 
+
+Please explain at least briefly why you chose these two datasets and not others from the extreme label classification.
+
+Fig 7 is mostly duplicated elsewhere (Table 4) and can be dropped? Consider using the space to make one of the denser tables into a figure instead.
+
+When comparing across a large set of alternative classes of approaches in Table 2, please consider adding a sentence or two of the weaknesses of your approach. For example, I *imagine* that the non-deep models like FastXML scale much better than the deep ones?
+---------------------------------------------------------------------------
+
+
+Typos, Grammar, and Style
+---------------------------------------------------------------------------
+I didn't do a full pass on references but the last citation in the paper to Zhao 2018b seems outdated (and should point to ACL version instead?)
+---------------------------------------------------------------------------
+
+
+
+============================================================================
+                            REVIEWER #3
+============================================================================
+
+What is this paper about, what contributions does it make, what are the main strengths and weaknesses?
+---------------------------------------------------------------------------
+This paper addresses various reasons which prevented the use of capsule networks in standard NLP problems. Concretely, this paper addresses the following problems with capsules — (a) the routing algorithm used by existing capsule networks is unstable and hard to train, this paper introduces a new routing strategy that uses the knowledge of the similarity between “prediction” capsules and the capsules at the next layer for faster convergence. They propose an intuitive kernel function which captures this and uses a mode-seeking strategy (mean-shift algorithm) to maximize the objective. This is an iterative algorithm and also adaptive and leads to faster convergence. (b) To address memory size constraints they observe that many primary capsules are noisy/redundant and they propose a simple aggregation /clustering strategy (via weighted summing).
+
+They experiment their model on two tasks - extreme multi-label classification (2 datasets) and factoid QA. All of the datasets have a multi-label nature and the number of training samples per label is limited (esp for EurLex). The experiments are done rigorously and they clearly show that their model outperforms various competitive CNN and recurrent neural network benchmarks. What is more impressive is the performance/generalization capability in limited data experiments. Moreover, the models have significantly less parameters than the baselines and the training time per batch is reasonable (although higher).
+
+They also clearly demonstrate that their routing algorithm is more stable and gets better performance wrt all the existing ones. +1 for willing to share the implementation.
+
+Strengths:
+(+) Improvements to capsule framework which yield a significant performance boost
+
+(+) Very well organized and clearly written paper
+
+(+) Generalizes well in low-data regime!
+
+Weakness:
+(-) A few minor changes to the paper regarding explanations which I am gonna mention below.
+---------------------------------------------------------------------------
+
+
+Reasons to accept
+---------------------------------------------------------------------------
+All of the strengths I have mentioned before.
+---------------------------------------------------------------------------
+
+
+Reasons to reject
+---------------------------------------------------------------------------
+None.
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+Reviewer's Scores
+---------------------------------------------------------------------------
+                  Overall Recommendation: 5
+
+Questions and Suggestions for the Author(s)
+---------------------------------------------------------------------------
+This paper is already in good shape and I hope these comments will make it even better
+
+1. Why is there a “min" in equation 6? Also why is it called a loss function, since the objective is to maximize it.
+
+2. I am not clear what figure 5 is trying to show actually. Does the figure to the left converge slower? However the loss is lower? This should be made clearer in the caption or the text. 
+
+3. The last paragraph in Accelerated Training section was unclear to me. The trick in batching needs to be clearer. 
+
+4. In equation 9, the scalar $b_j$ is learned from the loss at the end? Would it make more sense to also consider the similarity between the primary capsules (as you point out many of them are redundant?) 
+
+5. In the KBQA section, it would be nice to cite another knowledge base QA paper (Question Answering on Knowledge Bases and Text using Universal Schema and Memory Networks) as in their settings also the output space is large (all entities in freebase). I am not necessarily asking for comparison as I am convinced from the multi-label experiments.
+---------------------------------------------------------------------------
